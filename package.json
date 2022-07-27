@@ -2,9 +2,29 @@
   "dependencies": {
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "jest": "^28.1.3",
     "mongoose": "^6.5.0",
+    "path": "^0.12.7",
     "postgres": "^3.2.4"
-  }
+  },
+  "name": "qanda-api-server",
+  "description": "Updated backend for Atelier Q&A api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/team-sesame-street/QandA-API-Server.git"
+  },
+  "author": "Johnny Mok",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/team-sesame-street/QandA-API-Server/issues"
+  },
+  "homepage": "https://github.com/team-sesame-street/QandA-API-Server#readme"
 }
