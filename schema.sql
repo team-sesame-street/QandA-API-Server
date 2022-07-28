@@ -35,3 +35,5 @@ CREATE TABLE photos (
   url varchar,
   foreign key (answer_id) references answers (answer_id)
 );
+
+ALTER TABLE "questions" ADD FOREIGN KEY (product_id) REFERENCES "products" ("product_id");
