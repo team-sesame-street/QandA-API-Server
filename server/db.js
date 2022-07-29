@@ -26,7 +26,7 @@ module.exports = {
         text,
         params,
         duration,
-        rows: res.rowCount
+        rows: res?.rowCount
       })
       callback(err, res);
     })

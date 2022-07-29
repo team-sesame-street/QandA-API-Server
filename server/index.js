@@ -70,8 +70,31 @@ app.get('/qa/questions', (req,res) => {
     resObj.product_id = req.query.product_id.toString();
     resObj.results = result.rows;
 
-    res.send(resObj)
+    res.send(resObj);
   })
+})
+
+app.post('/qa/questions', (req, res) => {
+  console.log('post body', req.query);
+  let timestamp = new Date().toISOString();
+  console.log(timestamp);
+  db.query(`INSERT INTO questions (
+    product_id,
+    question_body,
+    question_date,
+    asker_name,
+    asker_email,
+    reported,
+    question_helpfulness)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)`, [req.query.product_id, req.query.body, timestamp, req.query.name, req.query.email, false, 0], (err, result) => {
+      if (err) {
+        console.log('error at index post question', err);
+      }
+      console.log('posted item', req.query.product_id, req.query.body, timestamp, req.query.name, req.query.email, false, 0)
+      res.status(201);
+      res.send();
+    })
+
 })
 
 var port = process.env.PORT || 3000;

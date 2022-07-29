@@ -1,14 +1,14 @@
-DROP TABLE IF EXISTS questions;
-DROP TABLE IF EXISTS testimport;
-DROP TABLE IF EXISTS answers;
-DROP TABLE IF EXISTS photos;
+DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS questions CASCADE;
+DROP TABLE IF EXISTS answers CASCADE;
+DROP TABLE IF EXISTS photos CASCADE;
 
 
 --create product table
   -- placeholder columns to take in the data then drop
 CREATE TABLE IF NOT EXISTS products
 (
-  product_id integer primary key,
+  product_id SERIAL primary key,
   temp1 text,
   temp2 text,
   temp3 text,
@@ -30,7 +30,7 @@ DROP COLUMN temp5;
   -- data is originally in epoch format in ms
 CREATE TABLE IF NOT EXISTS questions
 (
-  question_id integer primary key,
+  question_id SERIAL primary key,
   product_id integer,
   question_body varchar,
   question_date double precision,
@@ -51,7 +51,7 @@ ALTER TABLE questions
 
 --create answers table
 CREATE TABLE IF NOT EXISTS answers (
-  answer_id integer PRIMARY KEY,
+  answer_id SERIAL PRIMARY KEY,
   question_id integer,
   answer_body varchar,
   answer_date double precision,
@@ -82,3 +82,9 @@ CREATE TABLE IF NOT EXISTS photos (
 
 --copy from answer photos csv
 \COPY photos FROM 'answers_photos.csv' DELIMITER ',' CSV HEADER;
+
+--fix the serial sequences
+SELECT setval('questions_question_id_seq', max(question_id)) FROM questions;
+SELECT setval('answers_answer_id_seq', max(answer_id)) FROM answers;
+SELECT setval('photos_photo_id_seq', max(photo_id)) FROM photos;
+SELECT setval('products_product_id_seq', max(product_id)) FROM products;
