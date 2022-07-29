@@ -28,7 +28,7 @@ module.exports = {
         duration,
         rows: res.rowCount
       })
-      callback(err, res)
+      callback(err, res);
     })
   },
   //get a client to execute multiple queries
