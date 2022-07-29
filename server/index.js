@@ -7,6 +7,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+//look into using fetch and offset in the query to work with the page and count params.
 app.get('/qa/questions/:question_id/answers', (req, res) => {
   db.query(
     `SELECT
@@ -94,8 +95,20 @@ app.post('/qa/questions', (req, res) => {
       res.status(201);
       res.send();
     })
-
 })
+
+app.put('/qa/questions/:question_id/helpful', (req, res) => {
+  db.query(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${req.query.question_id}`, [], (err, result) => {
+    if (err) {
+      console.log('error at index put helpful', err);
+    }
+    console.log('updated question helpful', req.query.question_id);
+    res.status(204);
+    res.send(`updated question ${req.query.question_id}`);
+  })
+})
+
+
 
 var port = process.env.PORT || 3000;
 
