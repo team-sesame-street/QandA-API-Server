@@ -119,6 +119,27 @@ app.put('/qa/questions/:question_id/report', (req, res) => {
   })
 })
 
+app.put('/qa/answers/:answer_id/helpful', (req, res) => {
+  db.query(`UPDATE answers SET answer_helpfulness = answer_helpfulness + 1 WHERE answer_id = ${req.query.answer_id}`, [], (err, result) => {
+    if (err) {
+      console.log('error at index put helpful answer', err);
+    }
+    console.log('updated answer helpful', req.query.answer_id);
+    res.status(204);
+    res.send(`updated question ${req.query.answer_id}`);
+  })
+})
+
+app.put('/qa/answers/:answer_id/report', (req, res) => {
+  db.query(`UPDATE answers SET reported = true WHERE answer_id = ${req.query.answer_id}`, [], (err, result) => {
+    if (err) {
+      console.log('error at index put report', err);
+    }
+    console.log('updated answer report', req.query.answer_id);
+    res.status(204);
+    res.send();
+  })
+})
 
 
 var port = process.env.PORT || 3000;

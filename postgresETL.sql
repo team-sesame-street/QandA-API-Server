@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS answers (
   answerer_name varchar,
   answerer_email varchar,
   reported boolean,
-  answer_helpfulness varchar,
+  answer_helpfulness integer,
   foreign key (question_id) references questions (question_id)
 );
 
