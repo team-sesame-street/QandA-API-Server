@@ -108,6 +108,17 @@ app.put('/qa/questions/:question_id/helpful', (req, res) => {
   })
 })
 
+app.put('/qa/questions/:question_id/report', (req, res) => {
+  db.query(`UPDATE questions SET reported = true WHERE question_id = ${req.query.question_id}`, [], (err, result) => {
+    if (err) {
+      console.log('error at index put report', err);
+    }
+    console.log('updated question report', req.query.question_id);
+    res.status(204);
+    res.send();
+  })
+})
+
 
 
 var port = process.env.PORT || 3000;
