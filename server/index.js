@@ -97,9 +97,50 @@ app.post('/qa/questions', (req, res) => {
     })
 })
 
-// app.post('/qa/questions/:question_id/answers', (req, res) => {
-//   let timestamp = new Date().toISOString();
-// })
+app.post('/qa/questions/:question_id/answers', (req, res) => {
+  let timestamp = new Date().toISOString();
+  if (req.body.photos) {
+    db.query(`WITH ans AS (INSERT INTO answers (
+      question_id,
+      answer_body,
+      answer_date,
+      answerer_name,
+      answerer_email,
+      reported,
+      answer_helpfulness
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING answer_id)
+      INSERT INTO photos (
+        answer_id,
+        url
+      ) VALUES ((SELECT answer_id FROM ans), unnest(cast($8 as text[]))
+      )`,
+      [req.params.question_id, req.body.body, timestamp, req.body.name, req.body.email, false, 0, req.body.photos],(err, result) => {
+        if (err) {
+          console.log('error at index post answer with photo', err);
+        }
+        console.log('posted answer with photos',req.params.question_id, req.body.body, timestamp, req.body.name, req.body.email, false, 0);
+        res.status(201);
+        res.send();
+      })
+  } else {
+    db.query(`INSERT INTO answers (
+      question_id,
+      answer_body,
+      answer_date,
+      answerer_name,
+      answerer_email,
+      reported,
+      answer_helpfulness
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7)`, [req.params.question_id, req.body.body, timestamp, req.body.name, req.body.email, false, 0], (err, result) => {
+        if (err) {
+          console.log('error at answer post no photo', err)
+        }
+        console.log('posted answer w/o photos', req.params.question_id, req.body.body, timestamp, req.body.name, req.body.email, false, 0);
+        res.status(201);
+        res.send();
+      })
+  }
+})
 
 app.put('/qa/questions/:question_id/helpful', (req, res) => {
   db.query(`UPDATE questions SET question_helpfulness = question_helpfulness + 1 WHERE question_id = ${req.params.question_id}`, [], (err, result) => {
