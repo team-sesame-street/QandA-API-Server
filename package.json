@@ -18,7 +18,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "npx mocha -t 10000 tests",
     "start": "node ./server/index.js",
     "server-dev": "npx nodemon --watch server server/index.js"
   },
