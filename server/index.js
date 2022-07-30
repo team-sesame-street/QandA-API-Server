@@ -28,7 +28,6 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
         console.log('error at index get questions',err)
       }
       //can create/modify the result object.
-      console.log(result)
       let resObj = {};
       resObj.question = req.params.question_id.toString();
       resObj.page = req.query.page || 0;
@@ -40,7 +39,7 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
   )
 })
 
-app.get('/qa/questions', (req,res) => {
+app.get('/qa/questions/', (req,res) => {
   db.query(
     `SELECT q.question_id,
     q.question_body,
@@ -61,15 +60,15 @@ app.get('/qa/questions', (req,res) => {
       ))
       FROM photos p WHERE p.answer_id = a.answer_id) photos
     FROM answers a WHERE a.question_id = q.question_id) answers ) answers
-    FROM questions q WHERE product_id = ${req.params.product_id}`, [], (err, result) => {
+    FROM questions q WHERE product_id = ${req.query.product_id}`, [], (err, result) => {
     if (err) {
       console.log('error at index get questions',err)
     }
     //can create/modify the result object.
     console.log(result.rows)
     let resObj = {};
-    resObj.product_id = req.params.product_id.toString();
-    resObj.results = result.rows;
+    resObj.product_id = req.query.product_id.toString();
+    resObj.results = result?.rows;
 
     res.send(resObj);
   })
