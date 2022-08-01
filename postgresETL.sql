@@ -88,3 +88,7 @@ SELECT setval('questions_question_id_seq', max(question_id)) FROM questions;
 SELECT setval('answers_answer_id_seq', max(answer_id)) FROM answers;
 SELECT setval('photos_photo_id_seq', max(photo_id)) FROM photos;
 SELECT setval('products_product_id_seq', max(product_id)) FROM products;
+
+CREATE INDEX ON questions (product_id);
+CREATE INDEX ON answers (question_id);
+CREATE INDEX ON photos (answer_id);
