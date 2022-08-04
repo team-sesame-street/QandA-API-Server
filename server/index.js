@@ -187,6 +187,7 @@ app.put('/qa/answers/:answer_id/report', (req, res) => {
   })
 })
 
+app.get('/loaderio-9d117d7d004e3b575a1e99393251f76e', (req, res) => res.send('loaderio-9d117d7d004e3b575a1e99393251f76e'))
 
 var port = process.env.PORT || 3000;
 
