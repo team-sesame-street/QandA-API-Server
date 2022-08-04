@@ -67,7 +67,7 @@ app.get('/qa/questions/', (req,res) => {
       console.log('error at index get questions',err)
     }
     //can create/modify the result object.
-    console.log(result.rows)
+    // console.log(result.rows)
     let resObj = {};
     resObj.product_id = req.query.product_id.toString();
     resObj.results = result?.rows;
