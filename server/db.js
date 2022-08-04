@@ -22,12 +22,12 @@ module.exports = {
     return pool.query(text, params, (err, res) => {
       const duration = Date.now() - start;
       //logging info about the query
-      console.log('executed query', {
-        text,
-        params,
-        duration,
-        rows: res?.rowCount
-      })
+      // console.log('executed query', {
+      //   text,
+      //   params,
+      //   duration,
+      //   rows: res?.rowCount
+      // })
       callback(err, res);
     })
   },
