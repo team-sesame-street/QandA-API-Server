@@ -5,7 +5,8 @@ const db = require('./db.js');
 
 const app = express();
 
-app.use(express.static('public'));
+app.use('/', express.static(path.join(__dirname, 'public')))
+
 app.use(bodyParser.json());
 
 //look into using fetch and offset in the query to work with the page and count params.
