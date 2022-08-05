@@ -6,6 +6,11 @@ const db = require('./db.js');
 const app = express();
 
 app.use('/', express.static(path.join(__dirname, 'public')))
+app.use(
+  cors({
+    origin: '*'
+  })
+)
 
 app.use(bodyParser.json());
 
