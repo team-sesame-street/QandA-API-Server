@@ -17,6 +17,9 @@ app.use(bodyParser.json());
 
 //look into using fetch and offset in the query to work with the page and count params.
 app.get('/qa/questions/:question_id/answers', (req, res) => {
+  let count = req.query.count || 5;
+  let page = req.query.page || 1;
+  let pageOffset = (page -1) * count;
   db.query(
     `SELECT
       a.answer_id,
@@ -31,7 +34,8 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
       FROM photos p WHERE p.answer_id = a.answer_id) photos
 
 
-    FROM answers a WHERE a.question_id = ${req.params.question_id}`, [], (err, result) => {
+    FROM answers a WHERE a.question_id = ${req.params.question_id} AND a.reported = false
+    OFFSET ${pageOffset} FETCH FIRST ${count} ROW ONLY`, [], (err, result) => {
       if (err) {
         console.log('error at index get questions',err)
       }
@@ -48,6 +52,9 @@ app.get('/qa/questions/:question_id/answers', (req, res) => {
 })
 
 app.get('/qa/questions/', (req,res) => {
+  let count = req.query.count || 5;
+  let page = req.query.page || 1;
+  let pageOffset = (page -1) * count;
   db.query(
     `SELECT q.question_id,
     q.question_body,
@@ -68,7 +75,8 @@ app.get('/qa/questions/', (req,res) => {
       )), '[]')
       FROM photos p WHERE p.answer_id = a.answer_id) photos
     FROM answers a WHERE a.question_id = q.question_id) answers ) answers
-    FROM questions q WHERE product_id = ${req.query.product_id}`, [], (err, result) => {
+    FROM questions q WHERE product_id = ${req.query.product_id} AND q.reported = false
+    OFFSET ${pageOffset} FETCH FIRST ${count} ROW ONLY`, [], (err, result) => {
     if (err) {
       console.log('error at index get questions',err)
     }
