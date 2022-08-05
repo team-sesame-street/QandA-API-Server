@@ -55,17 +55,17 @@ app.get('/qa/questions/', (req,res) => {
     q.asker_name,
     q.question_helpfulness,
     q.reported,
-    (SELECT json_object_agg(answers.id, row_to_json(answers)) FROM
+    (SELECT COALESCE(json_object_agg(answers.id, row_to_json(answers)) FILTER (WHERE answers.id IS NOT NULL), '[]') FROM
     (SELECT
       a.answer_id id,
       a.answer_body body,
       a.answer_date date,
       a.answerer_name,
       a.answer_helpfulness helpfulness,
-      (SELECT json_agg(json_build_object(
+      (SELECT COALESCE(json_agg(json_build_object(
         'id', p.photo_id,
         'url', p.url
-      ))
+      )), '[]')
       FROM photos p WHERE p.answer_id = a.answer_id) photos
     FROM answers a WHERE a.question_id = q.question_id) answers ) answers
     FROM questions q WHERE product_id = ${req.query.product_id}`, [], (err, result) => {
